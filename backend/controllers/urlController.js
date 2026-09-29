@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+const { isValidUrl, generateShortCode } = require("../utils/urlUtils");
 const Url = require("../models/Url");
 
 const createShortUrl = async (req, res) => {
@@ -12,7 +12,18 @@ const createShortUrl = async (req, res) => {
       });
     }
 
-    const shortCode = crypto.randomBytes(4).toString("hex");
+    if (!isValidUrl(originalUrl)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid URL",
+      });
+    }
+
+    let shortCode;
+
+    do {
+      shortCode = generateShortCode(6);
+    } while (await Url.exists({ shortCode }));
 
     const url = await Url.create({
       originalUrl,
