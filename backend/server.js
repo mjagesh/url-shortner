@@ -8,6 +8,8 @@ const dotenv = require("dotenv");
 
 const connectDB = require("./config/db");
 const healthRoutes = require("./routes/healthRoutes");
+const urlRoutes = require("./routes/urlRoutes");
+const redirectRoutes = require("./routes/redirectRoutes");
 const { notFound } = require("./middleware/errorMiddleware");
 
 dotenv.config();
@@ -24,6 +26,8 @@ app.use(express.json());
 
 // Routes
 app.use("/api/health", healthRoutes);
+app.use("/api/urls", urlRoutes);
+app.use("/", redirectRoutes);
 
 // 404 handler
 app.use(notFound);

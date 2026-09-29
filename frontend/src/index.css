@@ -116,3 +116,13 @@ input {
     flex-direction: column;
   }
 }
+
+.error {
+  margin-top: 16px;
+  color: #dc2626;
+}
+
+.url-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

@@ -1,19 +1,33 @@
 import { useState } from "react";
+import { createShortUrl } from "../services/urlService";
 
 const Home = () => {
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!url.trim()) {
+      setError("Please enter a URL");
       return;
     }
 
-    // Temporary result.
-    // Backend integration will be added later.
-    setShortUrl("https://short.ly/aB72xK");
+    try {
+      setLoading(true);
+      setError("");
+      setShortUrl("");
+
+      const response = await createShortUrl(url);
+
+      setShortUrl(response.data.shortUrl);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -31,8 +45,12 @@ const Home = () => {
             onChange={(e) => setUrl(e.target.value)}
           />
 
-          <button type="submit">Shorten URL</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Shortening..." : "Shorten URL"}
+          </button>
         </form>
+
+        {error && <p className="error">{error}</p>}
 
         {shortUrl && (
           <div className="result">
@@ -43,7 +61,12 @@ const Home = () => {
                 {shortUrl}
               </a>
 
-              <button type="button">Copy</button>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard.writeText(shortUrl)}
+              >
+                Copy
+              </button>
             </div>
           </div>
         )}
