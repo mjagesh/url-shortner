@@ -21,6 +21,8 @@ input {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  color: #dce2e8;
+  background: radial-gradient(circle at 50% 0, #23528224, #0000 45%), #08090d;
 }
 
 .container {
