@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 
+import "./Login.css";
+
 const Login = () => {
   const navigate = useNavigate();
 
