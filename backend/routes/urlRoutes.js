@@ -2,12 +2,20 @@ const express = require("express");
 
 const {
   createShortUrl,
-  redirectToOriginalUrl,
+  getMyUrls,
+  deleteUrl,
+  getUrlAnalytics,
 } = require("../controllers/urlController");
+const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/", createShortUrl);
-router.get("/:shortCode", redirectToOriginalUrl);
+router.post("/", protect, createShortUrl);
+
+router.get("/my", protect, getMyUrls);
+
+router.get("/:id/analytics", protect, getUrlAnalytics);
+
+router.delete("/:id", protect, deleteUrl);
 
 module.exports = router;

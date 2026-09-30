@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createShortUrl } from "../services/urlService";
+import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
   const [url, setUrl] = useState("");
@@ -20,7 +21,9 @@ const Home = () => {
       setError("");
       setShortUrl("");
 
-      const response = await createShortUrl(url);
+      const { token } = useAuth();
+
+      const response = await createShortUrl(url, token);
 
       setShortUrl(response.data.shortUrl);
     } catch (error) {
